@@ -31,8 +31,8 @@ HEADERS = $(shell find $(CURDIR)/../../include . -name '*.h')
 $(MAIN_SWIG_WRAPPED_INTERFACE): $(MAIN_SWIG_INTERFACE) $(OTHER_SWIG_INTERFACES)
 	swig -c++ -python -o $@ $<
 
-pip: $(MAIN_SWIG_WRAPPED_INTERFACE) $(TARGET)
-	cp $(TARGET) $(PIP_FOLDER) & cp $(MODULE_NAME).py $(PIP_FOLDER)
+pip: $(MAIN_SWIG_WRAPPED_INTERFACE)
+	cp *_wrap.* $(PIP_FOLDER) & cp $(MODULE_NAME).py $(PIP_FOLDER)
 
 %.o: %.cc $(HEADERS)
 	$(CXX) $(FLAGS) $(INCLUDE) -c $< -o $@
