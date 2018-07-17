@@ -1,6 +1,8 @@
 # Underscore is required to be consistent with Swig's name generation
 TARGET = _rlinference.so
 
+PIP_FOLDER = ./rlinference/rlinference
+
 # Python 3.6 is specifically provided, tricky if we want to link against different versions.
 INCLUDE = -I ../../include -I ./ $(shell python3.6-config --includes)
 RLCLIENT_LIB = -L ../../rlclientlib -lrlclient
@@ -11,7 +13,7 @@ ALL_LIBS = $(RLCLIENT_LIB) $(VW_LIB) $(BOOST_LIBS) $(CPPREST_LIBS) $(LIBS)
 
 .PHONY: default all clean
 
-default: $(TARGET)
+default: pip
 all: default
 
 things: all
@@ -28,6 +30,9 @@ HEADERS = $(shell find $(CURDIR)/../../include . -name '*.h')
 
 $(MAIN_SWIG_WRAPPED_INTERFACE): $(MAIN_SWIG_INTERFACE) $(OTHER_SWIG_INTERFACES)
 	swig -c++ -python -o $@ $<
+
+pip: $(MAIN_SWIG_WRAPPED_INTERFACE) $(TARGET)
+	cp $(TARGET) $(PIP_FOLDER) & cp $(MODULE_NAME).py $(PIP_FOLDER)
 
 %.o: %.cc $(HEADERS)
 	$(CXX) $(FLAGS) $(INCLUDE) -c $< -o $@
