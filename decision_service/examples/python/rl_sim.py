@@ -6,8 +6,7 @@ import uuid
 import os
 import traceback
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "python_binding"))
-
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "bindings", "python"))
 import rlinference
 
 class my_error_callback(rlinference.error_callback):

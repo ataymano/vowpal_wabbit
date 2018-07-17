@@ -3,8 +3,8 @@
 %{
 #define SWIG_FILE_WITH_INIT
 #include "py_api.h"
-#include "../include/constants.h"
-#include "../include/err_constants.h"
+#include "../../include/constants.h"
+#include "../../include/err_constants.h"
 #include "config_collection.h"
 %}
 
@@ -17,6 +17,8 @@
 
 %feature("director") error_callback;
 
+%include "docs.i"
+
 %exception {
   try {
     $action
@@ -26,8 +28,8 @@
 }
 
 %include "py_api.h"
-%include "../include/constants.h"
-%include "../include/config_collection.h"
+%include "../../include/constants.h"
+%include "../../include/config_collection.h"
 
 namespace reinforcement_learning {
   namespace python {

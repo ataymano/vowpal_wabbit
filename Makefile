@@ -104,7 +104,7 @@ all:	vw library_example java spanning_tree rl_clientlib
 
 export
 
-rl_clientlib:
+rl_clientlib: vw
 	cd decision_service/rlclientlib; $(MAKE) -j $(NPROCS) things
 
 rl_clientlib_test: vw rl_clientlib
@@ -115,8 +115,8 @@ rl_example: vw rl_clientlib
 	cd decision_service/examples/basic_usage_cpp; $(MAKE) -j $(NPROCS) things
 	cd decision_service/examples/rl_sim_cpp; $(MAKE) -j $(NPROCS) things
 
-rl_python: vw
-	cd decision_service/python_binding; $(MAKE) -j $(NPROCS) things
+rl_python: vw rl_clientlib
+	cd decision_service/bindings/python; $(MAKE) -j $(NPROCS) things
 
 spanning_tree:
 	cd cluster; $(MAKE)
@@ -179,5 +179,6 @@ clean:
 	cd decision_service/unit_test; $(MAKE) clean
 	cd decision_service/examples/basic_usage_cpp; $(MAKE) clean
 	cd decision_service/examples/rl_sim_cpp; $(MAKE) clean
+	cd decision_service/bindings/python; $(MAKE) clean
 
 .PHONY: all clean install doc

@@ -1,9 +1,7 @@
 TARGET = librlclient.a
-ARFLAGS = rcs 
+ARFLAGS = rcs
 
 INCLUDE = -I ../include -I ../../explore -I ../explore -I ../../rapidjson/include -I ./
-
-FLAGS += -fPIC -std=c++11
 
 .PHONY: default all clean
 
@@ -22,7 +20,7 @@ HEADERS = $(wildcard *.h)
 .PRECIOUS: $(TARGET) $(OBJECTS)
 
 $(TARGET): $(OBJECTS)
-	ar $(ARFLAGS) $@ $(OBJECTS) 
+	ar $(ARFLAGS) $@ $(OBJECTS)
 
 clean:
 	-rm -f *.o

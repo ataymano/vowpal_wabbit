@@ -34,11 +34,12 @@ namespace reinforcement_learning {
     }
 
     reinforcement_learning::utility::config_collection create_config_from_json(const std::string& config_json) {
-      reinforcement_learning::utility::config_collection cc;
-      reinforcement_learning::api_status as;
-      auto result = reinforcement_learning::utility::config::create_from_json(config_json, cc, &as);
+      reinforcement_learning::utility::config_collection config;
+      reinforcement_learning::api_status status;
+      reinforcement_learning::utility::config::create_from_json(config_json, config, &status);
+      check_api_status(status);
 
-      return cc;
+      return config;
     }
 
     live_model::live_model(const reinforcement_learning::utility::config_collection config, error_callback& callback)
