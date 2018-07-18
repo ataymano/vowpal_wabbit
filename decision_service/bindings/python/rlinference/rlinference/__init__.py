@@ -1,2 +1,2 @@
-import rlinference
+from .rlinference import *
 
