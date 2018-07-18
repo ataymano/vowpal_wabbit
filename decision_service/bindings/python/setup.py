@@ -15,18 +15,17 @@ extension_module = setuptools.Extension(
 
 setuptools.setup(
 	name = "rlinference",
-	version = "0.0.2",
-	author = "Alexey Taymanov",
-	author_email = "ataymano@gmail.com",
-	description = "A small example",
+	version = "0.0.3",
+	author = "Microsoft",
+	author_email = "email?",
+	description = "Python binding for reinforcement learning client library",
 	long_description = long_description,
-	url = "https://github.com/ataymano/hello_world_12.git",
+	url = "url?",
 	ext_modules = [extension_module],
 	py_modules = ['rlinference.py'],
 	packages = setuptools.find_packages(),
 	classifiers = (
 		"Programming Language :: Python :: 3",
-		"License :: OSI Approved :: MIT License",
 		"Operating System :: OS Independent"
 	)
 )
