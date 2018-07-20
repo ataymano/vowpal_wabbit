@@ -7,10 +7,13 @@ with open("README.md", "r") as fh:
 extension_module = setuptools.Extension(
 	'rlinference._rlinference',
 	sources = glob.glob('*.cc'),
-	library_dirs = ['../../rlclientlib/', '../../../vowpalwabbit/'],
+	library_dirs = [],
 	include_dirs = ['../../include/'],
-	libraries = ['rlclient', 'vw', 'allreduce', 'boost_system', 'boost_program_options', 'cpprest', 'ssl', 'crypto', 'z', 'pthread', 'dl'],
+	libraries = ['pthread', 'dl'],
 	extra_compile_args = ['-std=c++11'],
+	extra_objects = ['../../rlclientlib/librlclient.a', '/usr/local/lib/libcpprest.a', '../../../vowpalwabbit/libvw.a', '../../../vowpalwabbit/liballreduce.a', \
+			 '/home/ataymano/boost_1_58_0/boost_output/lib/libboost_system.a', '/home/ataymano/boost_1_58_0/boost_output/lib/libboost_program_options.a', \
+			 '/home/ataymano/ssl/lib/libssl.a', '/home/ataymano/ssl/lib/libcrypto.a', '/home/ataymano/zlib/lib/libz.a']
 )
 
 setuptools.setup(
