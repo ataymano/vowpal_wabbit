@@ -70,7 +70,7 @@ namespace reinforcement_learning {
   {
     in_memory_buf buf(model_data, len);
 
-    _vw = VW::initialize("--quiet --json", &buf, false, nullptr, nullptr);
+    _vw = VW::initialize("--first_only --quiet --json", &buf, false, nullptr, nullptr);
   }
 
   safe_vw::~safe_vw()
