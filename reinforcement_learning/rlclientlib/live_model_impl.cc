@@ -19,6 +19,31 @@
 namespace e = exploration;
 using namespace std;
 
+const uint64_t a_hack = 0xeece66d5deece66dULL;
+const uint64_t c_hack = 2147483647;
+
+const int bias_hack = 127 << 23;
+
+union int_float_hack
+{
+  int32_t i;
+  float f;
+};
+
+inline float uniform_random_merand48_hack(uint64_t& initial)
+{
+  initial = a_hack * initial + c_hack;
+  int_float_hack temp;
+  temp.i = ((initial >> 25) & 0x7FFFFF) | bias_hack;
+  return temp.f - 1;
+}
+
+int uniform_int_hack(uint64_t seed, uint64_t low, uint64_t high)
+{
+  uniform_random_merand48_hack(seed);
+  return low + (uint64_t)((seed >> 25) % (high - low + 1));
+}
+
 namespace reinforcement_learning {
   // Some namespace changes for more concise code
   namespace m = model_management;
@@ -145,7 +170,7 @@ namespace reinforcement_learning {
     // Pick using the pdf
     uint32_t chosen_action_id;
     const uint64_t seed = uniform_hash(event_id, strlen(event_id), 0) + _seed_shift;
-    scode = e::sample_after_normalizing(seed, begin(pdf), end(pdf), chosen_action_id);
+    chosen_action_id = uniform_int_hack(seed, 0, action_count - 1);
     if (S_EXPLORATION_OK != scode) {
       RETURN_ERROR_LS(status, exploration_error) << "Exploration error code: " << scode;
     }
