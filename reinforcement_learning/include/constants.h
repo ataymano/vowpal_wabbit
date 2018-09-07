@@ -19,6 +19,7 @@ namespace reinforcement_learning {  namespace name {
       const char *const  INTERACTION_SEND_HIGH_WATER_MARK     = "interaction.send.highwatermark";
       const char *const  INTERACTION_SEND_QUEUE_MAXSIZE       = "interaction.send.queue.maxsize";
       const char *const  INTERACTION_SEND_BATCH_INTERVAL_MS   = "interaction.send.batchintervalms";
+      const char *const  INTERACTION_DROP_PROB                = "interaction.send.drop.prob";
       const char *const  OBSERVATION_SEND_HIGH_WATER_MARK     = "observation.send.highwatermark";
       const char *const  OBSERVATION_SEND_QUEUE_MAXSIZE       = "observation.send.queue.maxsize";
       const char *const  OBSERVATION_SEND_BATCH_INTERVAL_MS   = "observation.send.batchintervalms";

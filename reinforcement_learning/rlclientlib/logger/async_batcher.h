@@ -36,6 +36,8 @@ namespace reinforcement_learning {
 
     ~async_batcher();
 
+    bool is_full();
+
   private:
     TSender& _sender;                       // Somewhere to send the batch of data.
 
@@ -153,5 +155,10 @@ namespace reinforcement_learning {
       _background_thread.join();
     if (_queue.size() > 0)
       flush();
+  }
+
+  template <typename TSender>
+  bool async_batcher<TSender>::is_full() {
+    return _queue.size() >= _queue_max_size;
   }
 }

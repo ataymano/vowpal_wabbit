@@ -25,6 +25,8 @@ namespace reinforcement_learning {
       error_callback_fn* perror_cb = nullptr);
 
     virtual int init(api_status* status) override;
+    virtual bool is_full();
+
   protected:
     virtual int v_append(std::string& data, api_status* status) override;
 

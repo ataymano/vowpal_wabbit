@@ -56,6 +56,7 @@ namespace reinforcement_learning
     int explore_exploit(const char* event_id, const char* context, ranking_response& response, api_status* status) const;
     template<typename D>
     int report_outcome_internal(const char* event_id, D outcome, api_status* status);
+    int report_interaction(const char* event_id, const char* context, const ranking_response& response, api_status* status);
 
   private:
     // Internal implementation state
@@ -78,6 +79,7 @@ namespace reinforcement_learning
     utility::periodic_background_proc<model_management::model_downloader> _bg_model_proc;
     utility::object_pool<utility::data_buffer, utility::buffer_factory> _buffer_pool;
     uint64_t _seed_shift;
+    const float drop_prob;
   };
 
   template <typename D>

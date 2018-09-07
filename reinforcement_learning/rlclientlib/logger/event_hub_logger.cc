@@ -36,6 +36,10 @@ namespace reinforcement_learning
     return error_code::success;
   }
 
+  bool event_hub_logger::is_full() {
+    return _batcher.is_full();
+  }
+
   int event_hub_logger::v_append(std::string& item, api_status* status) {
     if(!_initialized) {
       api_status::try_update(status, error_code::not_initialized,

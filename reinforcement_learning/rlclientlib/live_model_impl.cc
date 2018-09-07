@@ -70,6 +70,32 @@ namespace reinforcement_learning {
     return error_code::success;
   }
 
+  int live_model_impl::report_interaction(const char* event_id, const char* context, const ranking_response& response, api_status* status)
+  {
+    bool sampled = false;
+    if (_ranking_logger->is_full()) {
+      const uint64_t seed = uniform_hash(event_id, strlen(event_id), 0) + _seed_shift;
+      if (e::uniform_random_merand48(seed) < drop_prob) {
+        RETURN_ERROR_LS(status, background_queue_overflow) << "Queue is full. Dropped event: " << event_id;
+      }
+      sampled = true;
+    }
+
+    u::pooled_object_guard<u::data_buffer, u::buffer_factory> guard(_buffer_pool, _buffer_pool.get_or_create());
+    guard->reset();
+
+    if (sampled == true) {
+      ranking_event::serialize(*guard.get(), event_id, context, response);
+    }
+    else {
+      ranking_event::serialize(*guard.get(), event_id, context, response, drop_prob);
+    }
+    auto sbuf = guard->str();
+    // Send the ranking event to the backend
+    RETURN_IF_FAIL(_ranking_logger->append(sbuf, status));
+    return true;
+  }
+
   //here the event_id is auto-generated
   int live_model_impl::choose_rank(const char* context, ranking_response& response, api_status* status) {
     return choose_rank(boost::uuids::to_string(boost::uuids::random_generator()()).c_str(), context, response,
@@ -103,7 +129,8 @@ namespace reinforcement_learning {
       _m_factory{m_factory},
       _logger_factory{logger_factory},
       _bg_model_proc(config.get_int(name::MODEL_REFRESH_INTERVAL_MS, 60 * 1000), &_error_cb),
-      _buffer_pool(new u::buffer_factory(utility::translate_func('\n', ' ')))
+      _buffer_pool(new u::buffer_factory(utility::translate_func('\n', ' '))),
+      drop_prob(_configuration.get_float(name::INTERACTION_DROP_PROB, 0.5))
   {}
 
   int live_model_impl::init_model(api_status* status) {
