@@ -81,6 +81,13 @@ namespace reinforcement_learning {
       status);
   }
 
+  int live_model_impl::report_action_taken(const char* event_id, api_status* status) {
+    // Clear previous errors if any
+    api_status::try_clear(status);
+    // Send the outcome event to the backend
+    RETURN_IF_FAIL(_outcome_logger->report_action_taken(event_id, status));
+  }
+
   int live_model_impl::report_outcome(const char* event_id, const char* outcome, api_status* status) {
     // Check arguments
     RETURN_IF_FAIL(check_null_or_empty(event_id, outcome, status));

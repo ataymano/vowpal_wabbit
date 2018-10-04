@@ -29,6 +29,8 @@ namespace reinforcement_learning
     //here the event_id is auto-generated
     int choose_rank(const char* context, unsigned int flags, ranking_response& response, api_status* status);
 
+    int report_action_taken(const char* event_id, api_status* status);
+
     int report_outcome(const char* event_id, const char* outcome_data, api_status* status);
     int report_outcome(const char* event_id, float reward, api_status* status);
 

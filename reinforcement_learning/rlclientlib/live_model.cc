@@ -65,6 +65,11 @@ namespace reinforcement_learning
     return _pimpl->choose_rank(context_json, flags, response, status);
   }
 
+  int live_model::report_action_taken(const char* event_id, api_status* status) {
+    INIT_CHECK();
+    return _pimpl->report_action_taken(event_id, status);
+  }
+
   int live_model::report_outcome(const char* event_id, const char* outcome, api_status* status)
   {
     INIT_CHECK();
