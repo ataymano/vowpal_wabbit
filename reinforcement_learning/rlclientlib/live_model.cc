@@ -1,3 +1,4 @@
+#include "action_flags.h"
 #include "live_model.h"
 #include "live_model_impl.h"
 #include "err_constants.h"
@@ -42,13 +43,26 @@ namespace reinforcement_learning
                               api_status* status)
   {
     INIT_CHECK();
-    return _pimpl->choose_rank(event_id, context_json, response, status);
+    return _pimpl->choose_rank(event_id, context_json, action_flags::DEFAULT, response, status);
   }
 
   int live_model::choose_rank(const char* context_json, ranking_response& response, api_status* status)
   {
     INIT_CHECK();
-    return _pimpl->choose_rank(context_json, response, status);
+    return _pimpl->choose_rank(context_json, action_flags::DEFAULT, response, status);
+  }
+
+  int live_model::choose_rank(const char* event_id, const char* context_json, unsigned int flags, ranking_response& response,
+    api_status* status)
+  {
+    INIT_CHECK();
+    return _pimpl->choose_rank(event_id, context_json, flags, response, status);
+  }
+
+  int live_model::choose_rank(const char* context_json, unsigned int flags, ranking_response& response, api_status* status)
+  {
+    INIT_CHECK();
+    return _pimpl->choose_rank(context_json, flags, response, status);
   }
 
   int live_model::report_outcome(const char* event_id, const char* outcome, api_status* status)

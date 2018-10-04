@@ -49,7 +49,7 @@ namespace reinforcement_learning {
     return error_code::success;
   }
 
-  int live_model_impl::choose_rank(const char* event_id, const char* context, ranking_response& response,
+  int live_model_impl::choose_rank(const char* event_id, const char* context, unsigned int flags, ranking_response& response,
     api_status* status) {
     response.clear();
     //clear previous errors if any
@@ -65,7 +65,7 @@ namespace reinforcement_learning {
       RETURN_IF_FAIL(explore_exploit(event_id, context, response, status));
     }
     response.set_event_id(event_id);
-    RETURN_IF_FAIL(_ranking_logger->log(event_id, context, response, status));
+    RETURN_IF_FAIL(_ranking_logger->log(event_id, context, flags, response, status));
 
     // Check watchdog for any background errors. Do this at the end of function so that the work is still done.
     if (_watchdog.has_background_error_been_reported()) {
@@ -76,8 +76,8 @@ namespace reinforcement_learning {
   }
 
   //here the event_id is auto-generated
-  int live_model_impl::choose_rank(const char* context, ranking_response& response, api_status* status) {
-    return choose_rank(boost::uuids::to_string(boost::uuids::random_generator()()).c_str(), context, response,
+  int live_model_impl::choose_rank(const char* context, unsigned int flags, ranking_response& response, api_status* status) {
+    return choose_rank(boost::uuids::to_string(boost::uuids::random_generator()()).c_str(), context, flags, response,
       status);
   }
 

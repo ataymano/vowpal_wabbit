@@ -1,3 +1,4 @@
+#include "action_flags.h"
 #include "ranking_event.h"
 #include "ranking_response.h"
 #include "utility/data_buffer.h"
@@ -50,11 +51,11 @@ namespace reinforcement_learning {
   ranking_event::ranking_event()
   { }
 
-  ranking_event::ranking_event(u::data_buffer& oss, const char* event_id, const char* context,
+  ranking_event::ranking_event(u::data_buffer& oss, const char* event_id, const char* context, unsigned int flags,
     const ranking_response& response, float pass_prob)
     : event(event_id, pass_prob)
   {
-    serialize(oss, event_id, context, response, _pass_prob);
+    serialize(oss, event_id, context, flags, response, _pass_prob);
     _body = oss.str();
   }
 
@@ -80,11 +81,13 @@ namespace reinforcement_learning {
   }
 
   void ranking_event::serialize(u::data_buffer& oss, const char* event_id, const char* context,
-    const ranking_response& resp, float pass_prob) {
+    unsigned int flags, const ranking_response& resp, float pass_prob) {
 
     //add version and eventId
     oss << R"({"Version":"1","EventId":")" << event_id;
-
+    if (flags | action_flags::DEFERRED) {
+      oss << R"(,"DeferredAction":true)";
+    }
     //add action ids
     oss << R"(","a":[)";
     if ( resp.size() > 0 ) {

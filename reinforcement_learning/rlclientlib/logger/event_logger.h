@@ -96,7 +96,7 @@ namespace reinforcement_learning {
         perror_cb)
     {}
 
-    int log(const char* event_id, const char* context, const ranking_response& response, api_status* status);
+    int log(const char* event_id, const char* context, unsigned int flags, const ranking_response& response, api_status* status);
   };
 
   class observation_logger : public event_logger<outcome_event> {
