@@ -105,6 +105,10 @@ namespace reinforcement_learning {
     oss << R"(],"VWState":{"m":")" << resp.get_model_id() << R"("})";
 	}
 
+  size_t ranking_event::size() const {
+    return _body.length();
+  }
+
   outcome_event::outcome_event()
   { }
 
@@ -145,5 +149,9 @@ namespace reinforcement_learning {
 
   void outcome_event::serialize(u::data_buffer& oss, const char* event_id, float outcome, float pass_prob) {
     oss << R"({"EventId":")" << event_id << R"(","v":)" << outcome << R"(})";
+  }
+
+  size_t outcome_event::size() const {
+    return _body.length();
   }
 }

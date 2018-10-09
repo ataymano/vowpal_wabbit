@@ -22,7 +22,7 @@ namespace reinforcement_learning {
       i_sender* sender,
       int send_high_watermark,
       int send_batch_interval_ms,
-      int send_queue_maxsize,
+      int send_queue_max_capacity,
       utility::watchdog& watchdog,
       error_callback_fn* perror_cb = nullptr);
 
@@ -46,7 +46,7 @@ namespace reinforcement_learning {
     i_sender* sender,
     int send_high_watermark,
     int send_batch_interval_ms,
-    int send_queue_maxsize,
+    int send_queue_max_capacity,
     utility::watchdog& watchdog,
     error_callback_fn* perror_cb
   )
@@ -56,7 +56,7 @@ namespace reinforcement_learning {
       perror_cb,
       send_high_watermark,
       send_batch_interval_ms,
-      send_queue_maxsize),
+      send_queue_max_capacity),
     _buffer_pool(new utility::buffer_factory(utility::translate_func('\n', ' ')))
   {}
 
@@ -91,7 +91,7 @@ namespace reinforcement_learning {
         sender,
         c.get_int(name::INTERACTION_SEND_HIGH_WATER_MARK, 198 * 1024),
         c.get_int(name::INTERACTION_SEND_BATCH_INTERVAL_MS, 1000),
-        c.get_int(name::INTERACTION_SEND_QUEUE_MAXSIZE, 100000 * 2),
+        c.get_int(name::INTERACTION_SEND_QUEUE_MAX_CAPACITY_KB, 16 * 1024) * 1024,
         watchdog,
         perror_cb)
     {}
@@ -106,7 +106,7 @@ namespace reinforcement_learning {
         sender,
         c.get_int(name::OBSERVATION_SEND_HIGH_WATER_MARK, 198 * 1024),
         c.get_int(name::OBSERVATION_SEND_BATCH_INTERVAL_MS, 1000),
-        c.get_int(name::OBSERVATION_SEND_QUEUE_MAXSIZE, 100000 * 2),
+        c.get_int(name::OBSERVATION_SEND_QUEUE_MAX_CAPACITY_KB, 16 * 1024) * 1024,
         watchdog,
         perror_cb)
     {}

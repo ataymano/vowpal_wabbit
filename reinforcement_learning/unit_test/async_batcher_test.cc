@@ -48,6 +48,10 @@ public:
     buf << _event_id;
   }
 
+  size_t size() const override {
+    return 1;
+  }
+
   std::string str() {
     utility::data_buffer buf;
     serialize(buf);
