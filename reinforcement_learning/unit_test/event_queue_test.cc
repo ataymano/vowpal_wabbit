@@ -31,7 +31,7 @@ public:
   }
 
   size_t size() const override {
-    return 1;
+    return 10;
   }
 
   std::string str() {
@@ -137,4 +137,20 @@ BOOST_AUTO_TEST_CASE(queue_move_push)
   test_event item;
   queue.pop(&item);
   BOOST_CHECK_EQUAL(item.str(), "hello");
+}
+
+BOOST_AUTO_TEST_CASE(queue_capacity_test)
+{
+  test_event test("hello");
+  reinforcement_learning::event_queue<test_event> queue;
+
+  BOOST_CHECK_EQUAL(queue.capacity(), 0);
+  // Contents of string moved into queue
+  queue.push(test);
+  BOOST_CHECK_EQUAL(queue.capacity(), 10);
+
+  // Contents of queue string moved into passed in string
+  test_event item;
+  queue.pop(&item);
+  BOOST_CHECK_EQUAL(queue.capacity(), 0);
 }
