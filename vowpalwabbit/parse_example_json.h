@@ -951,7 +951,7 @@ public:
       else if (length == 11 && !_stricmp(str, "_labelIndex"))
         return &ctx.label_index_state;
     }
-    else if (length == 10 && !strncmp(str, "_skipLearn", 10))
+    else if (length == 9 && !strncmp(str, "_deferred", 9))
     {
       ctx.bool_state.output_bool = &data->skipLearn;
       return &ctx.bool_state;
