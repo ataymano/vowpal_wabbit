@@ -1467,8 +1467,10 @@ options_i& load_header_merge_options(options_i& options, vw& all, io_buf& model)
   std::string saved_key = "";
   unsigned int count = 0;
   bool first_seen = false;
+  std::cerr << "HEADER_START" << std::endl;
   for (auto opt : pos.options)
   {
+    for (const auto& token : opt.original_tokens) { std::cerr << token << std::endl; }
     // If we previously encountered an option we want to skip, ignore tokens without --.
     if (skipping)
     {
@@ -1538,7 +1540,7 @@ options_i& load_header_merge_options(options_i& options, vw& all, io_buf& model)
   }
 
   if (count == 0 && saved_key != "") { options.insert(saved_key, ""); }
-
+  std::cerr << "HEADER_END" << std::endl;
   return options;
 }
 
