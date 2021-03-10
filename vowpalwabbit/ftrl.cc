@@ -37,6 +37,7 @@ struct ftrl
   uint32_t ftrl_size;
   double total_weight;
   double pred_norm;
+  bool with_fix;
 };
 
 struct uncertainty
@@ -77,7 +78,8 @@ float sensitivity(ftrl& b, base_learner& /* base */, example& ec)
 template <bool audit>
 void predict(ftrl& b, single_learner&, example& ec)
 {
-  ec.partial_prediction = GD::inline_predict(*b.all, ec) / b.pred_norm;
+  ec.partial_prediction = GD::inline_predict(*b.all, ec);
+  if (b.with_fix) ec.partial_prediction /= b.pred_norm;
   ec.pred.scalar = GD::finalize_prediction(b.all->sd, b.all->logger, ec.partial_prediction);
   if (audit) GD::print_audit_features(*(b.all), ec);
 }
@@ -324,7 +326,8 @@ base_learner* ftrl_setup(options_i& options, vw& all)
       .add(make_option("coin", coin).keep().help("Coin betting optimizer"))
       .add(make_option("pistol", pistol).keep().help("PiSTOL: Parameter-free STOchastic Learning"))
       .add(make_option("ftrl_alpha", b->ftrl_alpha).help("Learning rate for FTRL optimization"))
-      .add(make_option("ftrl_beta", b->ftrl_beta).help("Learning rate for FTRL optimization"));
+      .add(make_option("ftrl_beta", b->ftrl_beta).help("Learning rate for FTRL optimization"))
+      .add(make_option("with_coin_fix", b->with_fix).keep().help("Coin normalization fix"));
 
   options.add_and_parse(new_options);
 
