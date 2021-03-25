@@ -30,6 +30,7 @@ struct ftrl_update_data
   float predict;
   float normalized_squared_norm_x;
   float average_squared_norm_x;
+  bool with_coin_fix;
 };
 
 struct ftrl
@@ -211,7 +212,9 @@ void inner_coin_betting_update_after_prediction(ftrl_update_data& d, float x, fl
   w[W_G2] += fabs(gradient);
   w[W_WE] += (-gradient * w[W_XT]);
 
-  w[W_XT] /= d.average_squared_norm_x;
+  if (d.with_coin_fix) {
+    w[W_XT] /= d.average_squared_norm_x;
+  }
 }
 
 void coin_betting_predict(ftrl& b, single_learner&, example& ec)
@@ -333,7 +336,8 @@ base_learner* ftrl_setup(options_i& options, vw& all)
       .add(make_option("coin", coin).keep().help("Coin betting optimizer"))
       .add(make_option("pistol", pistol).keep().help("PiSTOL: Parameter-free STOchastic Learning"))
       .add(make_option("ftrl_alpha", b->ftrl_alpha).help("Learning rate for FTRL optimization"))
-      .add(make_option("ftrl_beta", b->ftrl_beta).help("Learning rate for FTRL optimization"));
+      .add(make_option("ftrl_beta", b->ftrl_beta).help("Learning rate for FTRL optimization"))
+      .add(make_option("with_coin_fix", b->data.with_coin_fix).keep().help("Coin normalization fix"));
 
   options.add_and_parse(new_options);
 
